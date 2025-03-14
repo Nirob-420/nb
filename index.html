@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Advanced NIROB Animation</title>
+  <style>
+    @font-face {
+      font-family: 'Source Code Pro';
+      font-style: normal;
+      font-weight: 400;
+      src: local('Source Code Pro'),
+           url(https://fonts.gstatic.com/s/sourcecodepro/v4/mrl8jkM18OlOQN8JLgasDxM0YzuT7MdOe03otPbuUS0.woff) format('woff');
+    }
+    
+    body {
+      margin: 0;
+      background: #000;
+      overflow: hidden;
+      font-family: 'Source Code Pro', monospace;
+      color: #00FF00;
+    }
+    
+    /* Matrix Rain Canvas */
+    canvas#matrix {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      z-index: 0;
+    }
+    
+    /* Advanced Console Output */
+    .output-console {
+      position: fixed;
+      bottom: 0;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 100%;
+      max-height: 40%;
+      overflow: hidden;
+      background: rgba(0, 0, 0, 0.8);
+      color: #00FF00;
+      padding: 10px;
+      font-size: 16px;
+      z-index: 2;
+      text-align: left;
+    }
+    
+    /* Glitch NIROB Text */
+    .nirob-text {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      font-size: 50px;
+      font-weight: bold;
+      color: #00FF00;
+      opacity: 0;
+      z-index: 3;
+      animation: fadeInOut 1.5s ease-in-out, glitch 1s infinite;
+    }
+    
+    @keyframes fadeInOut {
+      0% { opacity: 0; }
+      20% { opacity: 1; }
+      80% { opacity: 1; }
+      100% { opacity: 0; }
+    }
+    
+    @keyframes glitch {
+      0% {
+        text-shadow: 2px 2px #ff00c1, -2px -2px #00fff9;
+      }
+      20% {
+        text-shadow: -2px 2px #ff00c1, 2px -2px #00fff9;
+      }
+      40% {
+        text-shadow: 2px -2px #ff00c1, -2px 2px #00fff9;
+      }
+      60% {
+        text-shadow: -2px -2px #ff00c1, 2px 2px #00fff9;
+      }
+      80% {
+        text-shadow: 2px 2px #ff00c1, -2px -2px #00fff9;
+      }
+      100% {
+        text-shadow: -2px 2px #ff00c1, 2px -2px #00fff9;
+      }
+    }
+  </style>
+</head>
+<body>
+  <!-- Matrix Rain Background -->
+  <canvas id="matrix"></canvas>
+  <!-- Console Output Area -->
+  <div class="output-console" id="consoleOutput"></div>
+  <!-- Glitch NIROB Text -->
+  <div class="nirob-text" id="nirobText">NIROB</div>
+  
+  <script>
+    /* MATRIX RAIN EFFECT */
+    const canvas = document.getElementById("matrix");
+    const ctx = canvas.getContext("2d");
+    
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
+    
+    const fontSize = 16;
+    const columns = Math.floor(canvas.width / fontSize);
+    const drops = new Array(columns).fill(0);
+    const characters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789@#$%^&*()";
+    
+    function drawMatrix() {
+      ctx.fillStyle = "rgba(0, 0, 0, 0.05)";
+      ctx.fillRect(0, 0, canvas.width, canvas.height);
+      ctx.fillStyle = "#00FF00";
+      ctx.font = fontSize + "px 'Source Code Pro'";
+      
+      for (let i = 0; i < drops.length; i++) {
+        const text = characters.charAt(Math.floor(Math.random() * characters.length));
+        ctx.fillText(text, i * fontSize, drops[i] * fontSize);
+        if (drops[i] * fontSize > canvas.height && Math.random() > 0.975) {
+          drops[i] = 0;
+        }
+        drops[i]++;
+      }
+      requestAnimationFrame(drawMatrix);
+    }
+    
+    drawMatrix();
+    
+    /* ADVANCED CONSOLE OUTPUT WITH NIROB SEQUENCE */
+    function consoleOutput() {
+      const consoleElement = document.getElementById("consoleOutput");
+      const commands = [
+        "Initializing security protocols...",
+        "Accessing encrypted archives...",
+        "Decrypting data streams...",
+        "Establishing secure connection...",
+        "Verifying system integrity...",
+        "Loading kernel modules...",
+        "Injecting custom code...",
+        "Compiling cyber commands...",
+        "Bypassing firewall...",
+        "Finalizing system override..."
+      ];
+      
+      const nirobChars = ["N", "I", "R", "O", "B"];
+      let commandIndex = 0;
+      let nirobIndex = 0;
+      
+      function addConsoleLine() {
+        const line = document.createElement("p");
+        const text = commands[commandIndex % commands.length];
+        // প্রতিটি লাইনের শেষে NIROB-এর পর্যায়ক্রমিক অক্ষর যোগ
+        line.textContent = text + " [" + nirobChars[nirobIndex] + "]";
+        consoleElement.appendChild(line);
+        consoleElement.scrollTop = consoleElement.scrollHeight;
+        
+        commandIndex++;
+        nirobIndex = (nirobIndex + 1) % nirobChars.length;
+        
+        // কর্মক্ষমতার জন্য অতিরিক্ত লাইনগুলো সরানো
+        if (consoleElement.childNodes.length > 20) {
+          consoleElement.removeChild(consoleElement.childNodes[0]);
+        }
+        
+        setTimeout(addConsoleLine, 350);
+      }
+      
+      addConsoleLine();
+    }
+    
+    consoleOutput();
+    
+    /* NIROB GLITCH TEXT ANIMATION */
+    function showNirob() {
+      const nirobElement = document.getElementById("nirobText");
+      // এনিমেশন রিস্টার্ট করতে reflow
+      nirobElement.style.animation = 'none';
+      nirobElement.offsetHeight; 
+      nirobElement.style.animation = 'fadeInOut 1.5s ease-in-out, glitch 1s infinite';
+    }
+    
+    // প্রতি ৪ সেকেন্ড অন্তর NIROB গ্লিচ এফেক্ট দেখাবে
+    setInterval(showNirob, 4000);
+    
+    /* RESPONSIVE CANVAS */
+    window.addEventListener("resize", () => {
+      canvas.width = window.innerWidth;
+      canvas.height = window.innerHeight;
+      // নতুন কলাম সংখ্যা অনুযায়ী drops array রিসেট করা
+      const newColumns = Math.floor(canvas.width / fontSize);
+      drops.length = newColumns;
+      for (let i = 0; i < newColumns; i++) {
+        if (drops[i] === undefined) {
+          drops[i] = 0;
+        }
+      }
+    });
+  </script>
+</body>
+</html>
